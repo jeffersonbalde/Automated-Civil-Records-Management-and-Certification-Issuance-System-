@@ -24,12 +24,22 @@ class Database
     // }
 
     // FOR PRODUCTION
-    private $host = getenv("DB_HOST") ?: "localhost";
-    private $db_name = getenv("DB_NAME") ?: "civildb";
-    private $username = getenv("DB_USERNAME") ?: "doadmin";
-    private $password = getenv("DB_PASSWORD") ?: "";
-    private $port = getenv("DB_PORT") ?: "25060";
+    private $host;
+    private $db_name;
+    private $username;
+    private $password;
+    private $port;
     public $conn;
+
+    public function __construct()
+    {
+        $this->host = $_ENV["DB_HOST"] ?? getenv("DB_HOST") ?: "localhost";
+        $this->db_name = $_ENV["DB_NAME"] ?? getenv("DB_NAME") ?: "civildb";
+        $this->username = $_ENV["DB_USERNAME"] ?? getenv("DB_USERNAME") ?: "root";
+        $this->password = $_ENV["DB_PASSWORD"] ?? getenv("DB_PASSWORD") ?: "";
+        $this->port = $_ENV["DB_PORT"] ?? getenv("DB_PORT") ?: "3306";
+    }
+
 
     public function getConnection()
     {

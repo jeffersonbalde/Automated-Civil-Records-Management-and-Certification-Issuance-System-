@@ -2,6 +2,13 @@
 session_start();
 require_once '../config/database.php';
 
+$database = new Database();
+$conn = $database->getConnection();
+
+if (!$conn) {
+    die("Database connection failed. Please check your .env or config.");
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $response = ['status' => '', 'message' => ''];
 
