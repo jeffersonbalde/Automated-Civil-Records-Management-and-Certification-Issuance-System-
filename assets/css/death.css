@@ -1,0 +1,18 @@
+:root {
+  --primary-color: #f98636;
+  --primary-hover: #ff7043;
+  --sidebar-width: 280px;
+  --header-height: 70px;
+  --neutral-50: #f9fafb;
+  --neutral-100: #f3f4f6;
+  --neutral-200: #e5e7eb;
+  --neutral-700: #374151;
+  --neutral-800: #1f2937;
+}
+
+/* Layout */
+.death-container {
+  display: flex;
+  min-height: 100vh;
+  background: var(--neutral-50);
+}
