@@ -9,8 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="icon" type="image/png" href="../../assets/img/pagadian-logo.png" />
-    <link rel="stylesheet" href="../../assets/css/birth.css">
-    <link rel="stylesheet" href="../../assets/css/birth-modal.css">
+    <link rel="stylesheet" href="/css/birth.css">
+    <link rel="stylesheet" href="/css/birth-modal.css">
+    <!-- <link rel="stylesheet" href="../../assets/css/birth.css">
+    <link rel="stylesheet" href="../../assets/css/birth-modal.css"> -->
     <link href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css" rel="stylesheet">
 </head>
 
