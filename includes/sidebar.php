@@ -491,10 +491,9 @@ function confirmLogout() {
         loading.style.borderRadius = '8px';
         loading.style.zIndex = '10000';
         document.body.appendChild(loading);
-        
         // Simulate logout process
         setTimeout(() => {
-            window.location.href = '../../logout.php';
+            window.location.href = '../../handlers/logout.php';
         }, 1000);
     }
 }
