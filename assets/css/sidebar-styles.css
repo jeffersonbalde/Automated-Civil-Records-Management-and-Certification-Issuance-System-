@@ -1,0 +1,353 @@
+:root {
+    --primary: #D30203;
+    --dark: #151515;
+    --lightBg: #F5F5F5;
+    --text: #333333;
+    --lightText: #777777;
+    --border: #E0E0E0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--lightBg);
+    overflow-x: hidden;
+}
+
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
+    background: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    color: var(--primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 288px;
+    background-color: var(--dark);
+    color: white;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    border-bottom: 1px solid #333;
+}
+
+.header-content {
+    position: relative;
+    padding: 1rem;
+    border-bottom: 1px solid #333;
+    overflow: hidden;
+}
+
+.header-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('../../assets/images/red_lions.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+    transition: opacity 0.3s ease;
+}
+
+.header-content:hover .header-bg {
+    opacity: 0.3;
+}
+
+.header-main {
+    position: relative;
+    z-index: 10;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.logo-img {
+    height: 48px;
+    width: 48px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 2px 4px rgba(211, 2, 3, 0.5);
+}
+
+.logo-spacer {
+    width: 40px;
+    height: 40px;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.header-content:hover .logo-spacer {
+    opacity: 0.3;
+}
+
+.subtitle {
+    font-size: 0.75rem;
+    color: #ccc;
+    text-align: center;
+    position: relative;
+    padding-bottom: 4px;
+    font-weight: 500;
+}
+
+.underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #ffd700, #D30203);
+    animation: underlineExpand 1s ease 0.5s forwards;
+}
+
+@keyframes underlineExpand {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+.mobile-close-btn {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    color: var(--primary);
+    padding: 8px;
+    cursor: pointer;
+}
+
+/* Sidebar Content */
+.sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Navigation Links */
+.nav-link, .nav-child-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    color: #ccc;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    gap: 0.75rem;
+}
+
+.nav-link:hover, .nav-child-link:hover {
+    background-color: #333;
+    color: white;
+}
+
+.nav-link.active, .nav-child-link.active {
+    background-color: rgba(211, 2, 3, 0.2);
+    color: white;
+}
+
+.nav-link i, .nav-child-link i {
+    width: 20px;
+    text-align: center;
+}
+
+/* Navigation Groups */
+.nav-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-group-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    gap: 0.75rem;
+}
+
+.nav-group-btn:hover {
+    background-color: #333;
+    color: white;
+}
+
+.nav-group-btn.active {
+    background-color: rgba(211, 2, 3, 0.3);
+    color: white;
+}
+
+.group-main {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.nav-group-children {
+    display: none;
+    flex-direction: column;
+    padding-left: 2rem;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
+}
+
+.nav-group-children.expanded {
+    display: flex;
+}
+
+.nav-child-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid #333;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    gap: 0.75rem;
+}
+
+.logout-btn:hover {
+    background-color: #333;
+    color: white;
+}
+
+.developer-credits {
+    text-align: center;
+    padding-top: 0.5rem;
+}
+
+.developer-credits p {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+.developer-credits span {
+    color: #666;
+    font-weight: 600;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: 145px;
+    /* padding: 2rem; */
+    transition: margin-left 0.3s ease;
+}
+
+/* Overlay */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: block;
+    }
+    
+    .mobile-close-btn {
+        display: block;
+    }
+    
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .sidebar-overlay.active {
+        display: block;
+    }
+}
+
+/* Animation for group children */
+.nav-group-children {
+    animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}   
