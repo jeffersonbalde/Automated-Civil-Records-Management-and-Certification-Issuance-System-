@@ -6,7 +6,7 @@ use Dotenv\Dotenv;
 class Database
 {
 
-    // FOR LOCAL
+        // FOR LOCAL
     // private $host = "localhost";
     // private $db_name = "civildb";
     // private $username = "root";
