@@ -1,3 +1,203 @@
+<style>
+    .modal-dialog {
+        /* margin: 20px; */
+        /* display: flex;
+        align-items: center;
+        justify-content: center; */
+    }
+
+    .modal-content {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        color: white;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+        font-weight: 700;
+    }
+
+    .btn-close {
+        filter: invert(1);
+    }
+
+    /* Stepper */
+    .stepper {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    .stepper::before {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--border);
+        z-index: 1;
+    }
+
+    .step {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        flex: 1;
+    }
+
+    .step::before {
+        content: attr(data-step);
+        width: 40px;
+        height: 40px;
+        background: white;
+        border: 2px solid var(--border);
+        border-radius: 50%;
+        display: block;
+        margin: 0 auto 10px;
+        line-height: 36px;
+        font-weight: bold;
+        transition: all 0.3s;
+    }
+
+    .step.active::before {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: white;
+    }
+
+    .step.completed::before {
+        background: #28a745;
+        border-color: #28a745;
+        color: white;
+    }
+
+    .step span {
+        font-size: 0.8rem;
+        color: var(--light-text);
+        transition: all 0.3s;
+    }
+
+    .step.active span {
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    .step.completed span {
+        color: #28a745;
+        font-weight: 600;
+    }
+
+    .step-completion-indicator {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        width: 20px;
+        height: 20px;
+        background: #28a745;
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+        z-index: 3;
+    }
+
+    .step-completion-indicator.visible {
+        display: flex;
+    }
+
+    .form-step {
+        display: none;
+    }
+
+    .form-step.active {
+        display: block;
+        animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Duplicate Alert */
+    .duplicate-alert {
+        background: #FFF3E0;
+        border: 1px solid #FFB74D;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 16px;
+        display: none;
+        color: #E65100;
+    }
+
+    /* Form Styling */
+    .form-floating>.form-control:focus~label,
+    .form-floating>.form-control:not(:placeholder-shown)~label {
+        color: var(--primary);
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.25rem rgba(255, 152, 0, 0.25);
+    }
+
+    .btn-primary {
+        background-color: var(--primary);
+        border-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--primary-dark);
+        border-color: var(--primary-dark);
+    }
+
+    .btn-light {
+        background-color: #f8f9fa;
+        border-color: #f8f9fa;
+        color: var(--text);
+    }
+
+    .summary-card {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+    }
+
+    @media (max-width: 768px) {
+        .stepper {
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .step {
+            flex: 0 0 calc(33.333% - 10px);
+        }
+    }
+
+    @media (max-width: 576px) {
+        .step {
+            flex: 0 0 calc(50% - 10px);
+        }
+    }
+
+    .form-check.is-invalid .form-check-input {
+        border-color: #dc3545;
+    }
+
+    .form-check.is-invalid .form-check-label {
+        color: #dc3545;
+    }
+</style>
+
 <!-- Add Birth Certificate Modal -->
 <div class="modal fade" id="addBirthModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-xl">
