@@ -4,6 +4,67 @@ require_once '../config/database.php';
 
 header('Content-Type: application/json');
 
+// NEW: Function to check for duplicate records
+function checkForDuplicate($pdo, $input, $excludeId = null)
+{
+    $childFirstName = $input['child_first_name'] ?? '';
+    $childLastName = $input['child_last_name'] ?? '';
+    $dateOfBirth = $input['date_of_birth'] ?? '';
+
+    if (empty($childFirstName) || empty($childLastName) || empty($dateOfBirth)) {
+        return false;
+    }
+
+    $sql = "SELECT COUNT(*) as duplicate_count FROM birth_records 
+            WHERE child_first_name = ? AND child_last_name = ? AND date_of_birth = ?";
+    $params = [$childFirstName, $childLastName, $dateOfBirth];
+
+    if ($excludeId) {
+        $sql .= " AND birth_id != ?";
+        $params[] = $excludeId;
+    }
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return $result['duplicate_count'] > 0;
+}
+
+// NEW: Function to find similar records
+function findSimilarRecords($pdo, $input, $excludeId = null)
+{
+    $childFirstName = $input['child_first_name'] ?? '';
+    $childLastName = $input['child_last_name'] ?? '';
+    $dateOfBirth = $input['date_of_birth'] ?? '';
+
+    $similarRecords = [];
+
+    // Check by name and similar date (within 30 days)
+    if (!empty($childFirstName) && !empty($childLastName)) {
+        $sql = "SELECT br.birth_id, br.registry_number, br.child_first_name, 
+                       br.child_middle_name, br.child_last_name, br.date_of_birth,
+                       br.place_of_birth, br.date_registered
+                FROM birth_records br
+                WHERE (br.child_first_name LIKE ? OR br.child_last_name LIKE ?)";
+
+        $params = ["%$childFirstName%", "%$childLastName%"];
+
+        if ($excludeId) {
+            $sql .= " AND br.birth_id != ?";
+            $params[] = $excludeId;
+        }
+
+        $sql .= " ORDER BY br.date_registered DESC LIMIT 5";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        $similarRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    return $similarRecords;
+}
+
 try {
     // Initialize database connection using your existing config
     $database = new Database();
@@ -15,14 +76,55 @@ try {
 
     // Get JSON data
     $input = json_decode(file_get_contents('php://input'), true);
-    
-    if (!$input || $input['action'] !== 'save_birth_record') {
-        throw new Exception('Invalid action or no data received');
+
+    if (!$input) {
+        throw new Exception('No data received');
+    }
+
+    // NEW: Handle duplicate check request
+    if ($input['action'] === 'check_duplicate') {
+        $isDuplicate = checkForDuplicate($pdo, $input);
+        $similarRecords = findSimilarRecords($pdo, $input);
+
+        echo json_encode([
+            'is_duplicate' => $isDuplicate,
+            'similar_records' => $similarRecords,
+            'checked_fields' => [
+                'child_first_name' => $input['child_first_name'] ?? '',
+                'child_last_name' => $input['child_last_name'] ?? '',
+                'date_of_birth' => $input['date_of_birth'] ?? ''
+            ]
+        ]);
+        exit;
+    }
+
+    // NEW: Handle similar records check request
+    if ($input['action'] === 'find_similar') {
+        $similarRecords = findSimilarRecords($pdo, $input);
+
+        echo json_encode([
+            'similar_records' => $similarRecords
+        ]);
+        exit;
+    }
+
+    if ($input['action'] !== 'save_birth_record') {
+        throw new Exception('Invalid action');
     }
 
     // Check if user is logged in
     if (!isset($_SESSION['user_id'])) {
         throw new Exception('User not logged in');
+    }
+
+    // NEW: Check for duplicates before saving
+    if (checkForDuplicate($pdo, $input)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Duplicate record found. A record with the same child name and date of birth already exists.',
+            'is_duplicate' => true
+        ]);
+        exit;
     }
 
     // Start transaction
@@ -174,29 +276,48 @@ try {
         'registry_number' => $registry_number,
         'birth_id' => $birthId
     ]);
-
 } catch (Exception $e) {
     // Rollback transaction on error
     if (isset($pdo) && $pdo->inTransaction()) {
         $pdo->rollBack();
     }
-    
+
     error_log('Birth record save error: ' . $e->getMessage());
-    
+
     echo json_encode([
         'success' => false,
         'message' => 'Error saving birth record: ' . $e->getMessage()
     ]);
 }
 
-function generateRegistryNumber($pdo) {
+function generateRegistryNumber($pdo)
+{
     $year = date('Y');
-    $sql = "SELECT COUNT(*) as count FROM birth_records WHERE YEAR(date_registered) = ?";
+
+    // Use a more reliable method to generate unique registry numbers
+    // Get the highest sequence number for the current year
+    $sql = "SELECT MAX(CAST(SUBSTRING_INDEX(registry_number, '-', -1) AS UNSIGNED)) as max_sequence 
+            FROM birth_records 
+            WHERE registry_number LIKE ?";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$year]);
+    $stmt->execute(["BR-$year-%"]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    $sequence = $result['count'] + 1;
+
+    $sequence = ($result['max_sequence'] ?? 0) + 1;
+
+    // If no records found for this year, start from 1
+    if ($sequence === 1) {
+        // Double check if there are really no records for this year
+        $checkSql = "SELECT COUNT(*) as count FROM birth_records WHERE YEAR(date_registered) = ?";
+        $checkStmt = $pdo->prepare($checkSql);
+        $checkStmt->execute([$year]);
+        $checkResult = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($checkResult['count'] > 0) {
+            // If there are records but our sequence detection failed, use count + 1
+            $sequence = $checkResult['count'] + 1;
+        }
+    }
+
     return "BR-" . $year . "-" . str_pad($sequence, 5, '0', STR_PAD_LEFT);
 }
-?>

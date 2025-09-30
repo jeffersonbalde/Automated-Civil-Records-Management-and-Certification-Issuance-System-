@@ -125,8 +125,15 @@
     }
 
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* Duplicate Alert */
@@ -146,7 +153,8 @@
         color: var(--primary);
     }
 
-    .form-control:focus, .form-select:focus {
+    .form-control:focus,
+    .form-select:focus {
         border-color: var(--primary);
         box-shadow: 0 0 0 0.25rem rgba(255, 152, 0, 0.25);
     }
@@ -207,14 +215,28 @@
                 <button type="button" class="btn-close" id="closeModalBtn"></button>
             </div>
             <div class="modal-body">
-                <!-- Duplicate Detection Alert -->
+                <!-- Duplicate Detection Alert
                 <div class="duplicate-alert" id="duplicateAlert">
                     <i class="fas fa-exclamation-triangle"></i>
                     <strong>Possible Duplicate Detected!</strong> 
                     <span id="duplicateMessage">A record with similar information already exists.</span>
                     <button class="btn btn-sm btn-warning ms-2" id="viewDuplicateBtn">View Similar Records</button>
+                </div> -->
+
+                <!-- Duplicate Alert -->
+                <div id="duplicateAlert" class="alert alert-warning" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <span id="duplicateMessage"></span>
+                            <div id="similarRecordsList" style="display: none;"></div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-warning" id="viewDuplicateBtn" style="display: none;" onclick="viewDuplicateRecords()">
+                            <i class="fas fa-search me-1"></i> View Similar Records
+                        </button>
+                    </div>
                 </div>
-                
+
                 <form id="birthCertForm">
                     <!-- Step Progress Indicator -->
                     <div class="stepper">
@@ -697,17 +719,17 @@
                     <div class="form-step" id="step8">
                         <h5 class="mb-3">Review and Submit</h5>
                         <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i> Please review all information before submitting. 
+                            <i class="fas fa-info-circle"></i> Please review all information before submitting.
                             Once submitted, the record will be added to the system.
                         </div>
-                        
+
                         <div class="summary-card p-3 border rounded mb-3">
                             <h6 class="fw-bold">Record Summary</h6>
                             <div id="formSummary">
                                 <!-- Summary will be populated by JavaScript -->
                             </div>
                         </div>
-                        
+
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" id="confirmAccuracy" required>
                             <label class="form-check-label" for="confirmAccuracy">
