@@ -37,27 +37,27 @@ class Database
     public function __construct()
     {
         // // Load .env only once
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-        $dotenv->load();
+        // $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+        // $dotenv->load();
 
-        $this->host     = $_ENV["DB_HOST"]     ?? "localhost";
-        $this->db_name  = $_ENV["DB_NAME"]     ?? "civildb";
-        $this->username = $_ENV["DB_USERNAME"] ?? "root";
-        $this->password = $_ENV["DB_PASSWORD"] ?? "";
-        $this->port     = $_ENV["DB_PORT"]     ?? "3306";
+        // $this->host     = $_ENV["DB_HOST"]     ?? "localhost";
+        // $this->db_name  = $_ENV["DB_NAME"]     ?? "civildb";
+        // $this->username = $_ENV["DB_USERNAME"] ?? "root";
+        // $this->password = $_ENV["DB_PASSWORD"] ?? "";
+        // $this->port     = $_ENV["DB_PORT"]     ?? "3306";
 
         // Load .env only if exists (for local dev)
-        // $dotenvPath = __DIR__ . '../../.env';
-        // if (file_exists($dotenvPath)) {
-        //     $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-        //     $dotenv->load();
-        // }
+        $dotenvPath = __DIR__ . '../../.env';
+        if (file_exists($dotenvPath)) {
+            $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+            $dotenv->load();
+        }
 
-        // $this->host     = getenv("DB_HOST") ?: "localhost";
-        // $this->db_name  = getenv("DB_NAME") ?: "civildb";
-        // $this->username = getenv("DB_USERNAME") ?: "root";
-        // $this->password = getenv("DB_PASSWORD") ?: "";
-        // $this->port     = getenv("DB_PORT") ?: "3306";
+        $this->host     = getenv("DB_HOST") ?: "localhost";
+        $this->db_name  = getenv("DB_NAME") ?: "civildb";
+        $this->username = getenv("DB_USERNAME") ?: "root";
+        $this->password = getenv("DB_PASSWORD") ?: "";
+        $this->port     = getenv("DB_PORT") ?: "3306";
     }
 
     public function getConnection()
