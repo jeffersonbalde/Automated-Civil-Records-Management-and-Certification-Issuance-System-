@@ -47,11 +47,11 @@ class Database
         // $this->port     = $_ENV["DB_PORT"]     ?? "3306";
 
         // Load .env only if exists (for local dev)
-        $dotenvPath = __DIR__ . '../../.env';
-        if (file_exists($dotenvPath)) {
-            $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-            $dotenv->load();
-        }
+    //     $dotenvPath = __DIR__ . '../../.env';
+    //     if (file_exists($dotenvPath)) {
+    //         $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+    //         $dotenv->load();
+    //     }
 
         $this->host     = getenv("DB_HOST") ?: "localhost";
         $this->db_name  = getenv("DB_NAME") ?: "civildb";
