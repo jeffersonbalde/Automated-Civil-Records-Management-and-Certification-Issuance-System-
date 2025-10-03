@@ -35,7 +35,7 @@ $navItems = [
                 'icon' => 'fas fa-baby'
             ],
             [
-                'path' => '#',
+                'path' => '/modules/marriage/marriage.php',
                 'label' => 'Marriage Records',
                 'icon' => 'fas fa-ring'
             ],

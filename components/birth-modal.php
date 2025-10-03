@@ -204,6 +204,10 @@
     .form-check.is-invalid .form-check-label {
         color: #dc3545;
     }
+
+    .mb-3 {
+        font-weight: 700;
+    }
 </style>
 
 <!-- Add Birth Certificate Modal -->
