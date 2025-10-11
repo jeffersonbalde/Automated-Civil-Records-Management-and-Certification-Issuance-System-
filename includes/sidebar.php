@@ -1,20 +1,20 @@
 <?php
-// Define colors for dark theme sidebar
+// Define colors for LIGHT theme sidebar (ORANGE THEME)
 $colors = [
-    'primary' => '#D30203',        // Red from "SENSO" text
-    'accent' => '#FF6B35',         // Orange/red from the photo
-    'sidebar-bg' => '#1a1a1a',     // Dark sidebar background
-    'sidebar-text' => '#ffffff',   // White text for sidebar
-    'sidebar-hover' => '#2d2d2d',  // Dark hover background
-    'child-bg' => '#252525',       // Dark background for child items
-    'border' => '#404040',         // Dark border
+    'primary' => '#FF6B35',        // Main orange color
+    'accent' => '#E55A2B',         // Darker orange for accents
+    'sidebar-bg' => '#ffffff',     // WHITE sidebar background
+    'sidebar-text' => '#333333',   // Dark text for sidebar
+    'sidebar-hover' => '#FFF5F2',  // Light orange hover background
+    'child-bg' => '#FFF5F2',       // Light orange background for child items
+    'border' => '#FFD1C4',         // Light orange border
     'success' => '#28A745',
     'warning' => '#FFC107',
     'danger' => '#DC3545',
     'info' => '#17A2B8'
 ];
 
-// Navigation items structure for Civil Registry System
+// Navigation items structure for Civil Registry System (unchanged)
 $navItems = [
     [
         'id' => 'dashboard',
@@ -40,7 +40,7 @@ $navItems = [
                 'icon' => 'fas fa-ring'
             ],
             [
-                'path' => '#',
+                'path' => '/modules/death/death.php',
                 'label' => 'Death Records',
                 'icon' => 'fas fa-cross'
             ]
@@ -143,7 +143,7 @@ $navItems = [
     ]
 ];
 
-// Function to check active route
+// Function to check active route (unchanged)
 function isActiveRoute($path)
 {
     $currentPath = $_SERVER['PHP_SELF'];
@@ -158,7 +158,7 @@ function isActiveRoute($path)
     return $currentPath === $path || strpos($currentPath, $path) === 0;
 }
 
-// Function to check if group is active
+// Function to check if group is active (unchanged)
 function isGroupActive($children)
 {
     foreach ($children as $child) {
@@ -169,7 +169,7 @@ function isGroupActive($children)
     return false;
 }
 
-// Check if mobile
+// Check if mobile (unchanged)
 $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i', $_SERVER['HTTP_USER_AGENT']);
 ?>
 
@@ -181,7 +181,7 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
     <title>Civil Registry System - Admin Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* CSS Variables for dark theme */
+        /* CSS Variables for ORANGE THEME */
         :root {
             --primary: <?php echo $colors['primary']; ?>;
             --accent: <?php echo $colors['accent']; ?>;
@@ -192,11 +192,12 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
             --border: <?php echo $colors['border']; ?>;
         }
 
-        /* Simplified sidebar styles for dark theme */
+        /* Simplified sidebar styles for ORANGE THEME */
         .sidebar {
             background: var(--sidebar-bg);
             border-right: 1px solid var(--border);
             color: var(--sidebar-text);
+            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
         }
 
         .sidebar-header {
@@ -226,7 +227,7 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
         .nav-link:hover, .nav-group-btn:hover {
             background: var(--sidebar-hover);
             color: var(--sidebar-text);
-            border-left-color: var(--accent);
+            border-left-color: var(--primary);
         }
 
         .nav-link.active, .nav-group-btn.active {
@@ -246,7 +247,7 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
         .nav-child-link:hover {
             background: var(--sidebar-hover);
             color: var(--sidebar-text);
-            border-left-color: var(--accent);
+            border-left-color: var(--primary);
         }
 
         .nav-child-link.active {
@@ -256,25 +257,25 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
         }
 
         .logout-btn {
-            background: var(--accent);
+            background: var(--primary);
             color: white;
             border: none;
             transition: all 0.3s ease;
         }
 
         .logout-btn:hover {
-            background: var(--primary);
+            background: var(--accent);
             color: white;
             transform: translateY(-1px);
         }
 
         .developer-credits {
-            color: rgba(255,255,255,0.7);
+            color: rgba(0,0,0,0.6);
             font-size: 0.75rem;
         }
 
         .developer-credits span {
-            color: var(--accent);
+            color: var(--primary);
             font-weight: bold;
         }
 
@@ -286,13 +287,13 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
         }
 
         .sidebar-overlay.active {
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.5);
         }
 
         /* Chevron colors */
         .nav-group-btn i.fa-chevron-right,
         .nav-group-btn i.fa-chevron-down {
-            color: var(--accent);
+            color: var(--primary);
         }
 
         /* Logo section improvements */
@@ -307,7 +308,7 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
             filter: brightness(0) invert(1);
         }
 
-        /* Sidebar footer dark theme */
+        /* Sidebar footer light theme */
         .sidebar-footer {
             background: var(--child-bg);
             border-top: 1px solid var(--border);
@@ -333,7 +334,7 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
         .nav-link:hover i, 
         .nav-group-btn:hover i, 
         .nav-child-link:hover i {
-            color: var(--accent);
+            color: var(--primary);
         }
     </style>
     <link rel="stylesheet" href="../../assets/css/sidebar-styles.css">

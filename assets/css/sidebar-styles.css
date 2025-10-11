@@ -1,10 +1,10 @@
 :root {
-    --primary: #D30203;
-    --dark: #151515;
+    --primary: #FF6B35;
+    --accent: #E55A2B;
     --lightBg: #F5F5F5;
     --text: #333333;
     --lightText: #777777;
-    --border: #E0E0E0;
+    --border: #FFD1C4;
 }
 
 * {
@@ -41,17 +41,18 @@ body {
     cursor: pointer;
 }
 
-/* Sidebar Styles */
+/* Sidebar Styles - ORANGE THEME */
 .sidebar {
     width: 288px;
-    background-color: var(--dark);
-    color: white;
+    background-color: #ffffff;
+    color: #333333;
     height: 100vh;
     position: fixed;
     left: 0;
     top: 0;
     z-index: 1000;
     transition: transform 0.3s ease;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
 }
 
 .sidebar-inner {
@@ -62,13 +63,13 @@ body {
 
 /* Sidebar Header */
 .sidebar-header {
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--border);
 }
 
 .header-content {
     position: relative;
     padding: 1rem;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--border);
     overflow: hidden;
 }
 
@@ -108,7 +109,7 @@ body {
     font-size: 1.5rem;
     font-weight: 800;
     color: white;
-    text-shadow: 0 2px 4px rgba(211, 2, 3, 0.5);
+    text-shadow: 0 2px 4px rgba(255, 107, 53, 0.5);
 }
 
 .logo-spacer {
@@ -124,7 +125,7 @@ body {
 
 .subtitle {
     font-size: 0.75rem;
-    color: #ccc;
+    color: rgba(255,255,255,0.9);
     text-align: center;
     position: relative;
     padding-bottom: 4px;
@@ -137,7 +138,7 @@ body {
     left: 0;
     width: 100%;
     height: 2px;
-    background: linear-gradient(90deg, #ffd700, #D30203);
+    background: linear-gradient(90deg, #FFB74D, var(--primary));
     animation: underlineExpand 1s ease 0.5s forwards;
 }
 
@@ -171,31 +172,40 @@ body {
     gap: 0.5rem;
 }
 
-/* Navigation Links */
+/* Navigation Links - ORANGE THEME */
 .nav-link, .nav-child-link {
     display: flex;
     align-items: center;
     padding: 0.75rem 1rem;
     border-radius: 8px;
-    color: #ccc;
+    color: #555555;
     text-decoration: none;
     transition: all 0.2s ease;
     gap: 0.75rem;
+    border-left: 3px solid transparent;
 }
 
 .nav-link:hover, .nav-child-link:hover {
-    background-color: #333;
-    color: white;
+    background-color: #FFF5F2;
+    color: #333333;
+    border-left-color: var(--primary);
 }
 
 .nav-link.active, .nav-child-link.active {
-    background-color: rgba(211, 2, 3, 0.2);
-    color: white;
+    background-color: rgba(255, 107, 53, 0.1);
+    color: var(--primary);
+    border-left-color: var(--primary);
+    font-weight: 600;
 }
 
 .nav-link i, .nav-child-link i {
     width: 20px;
     text-align: center;
+    color: #666666;
+}
+
+.nav-link.active i, .nav-child-link.active i {
+    color: var(--primary);
 }
 
 /* Navigation Groups */
@@ -212,20 +222,23 @@ body {
     border-radius: 8px;
     background: none;
     border: none;
-    color: #ccc;
+    color: #555555;
     cursor: pointer;
     transition: all 0.2s ease;
     gap: 0.75rem;
+    border-left: 3px solid transparent;
 }
 
 .nav-group-btn:hover {
-    background-color: #333;
-    color: white;
+    background-color: #FFF5F2;
+    color: #333333;
+    border-left-color: var(--primary);
 }
 
 .nav-group-btn.active {
-    background-color: rgba(211, 2, 3, 0.3);
-    color: white;
+    background-color: rgba(255, 107, 53, 0.1);
+    color: var(--primary);
+    border-left-color: var(--primary);
 }
 
 .group-main {
@@ -249,12 +262,14 @@ body {
 .nav-child-link {
     padding: 0.5rem 0.75rem;
     font-size: 0.9rem;
+    background-color: #FFF5F2;
 }
 
 /* Sidebar Footer */
 .sidebar-footer {
     padding: 1rem;
-    border-top: 1px solid #333;
+    border-top: 1px solid var(--border);
+    background-color: #FFF5F2;
 }
 
 .logout-btn {
@@ -263,17 +278,18 @@ body {
     width: 100%;
     padding: 0.75rem 1rem;
     border-radius: 8px;
-    background: none;
+    background: var(--primary);
     border: none;
-    color: #ccc;
+    color: white;
     cursor: pointer;
     transition: all 0.2s ease;
     gap: 0.75rem;
 }
 
 .logout-btn:hover {
-    background-color: #333;
+    background: var(--accent);
     color: white;
+    transform: translateY(-1px);
 }
 
 .developer-credits {
@@ -283,19 +299,18 @@ body {
 
 .developer-credits p {
     font-size: 0.75rem;
-    color: #666;
+    color: #888888;
 }
 
 .developer-credits span {
-    color: #666;
-    font-weight: 600;
+    color: var(--primary);
+    font-weight: bold;
 }
 
 /* Main Content */
 .main-content {
     flex: 1;
     margin-left: 145px;
-    /* padding: 2rem; */
     transition: margin-left 0.3s ease;
 }
 
@@ -350,4 +365,31 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
-}   
+}
+
+/* Chevron colors for orange theme */
+.nav-group-btn i.fa-chevron-right,
+.nav-group-btn i.fa-chevron-down {
+    color: var(--primary);
+}
+
+/* Hover state for icons in orange theme */
+.nav-link:hover i, 
+.nav-group-btn:hover i, 
+.nav-child-link:hover i {
+    color: var(--primary);
+}
+
+/* Active state improvements for orange theme */
+.nav-link.active, 
+.nav-group-btn.active, 
+.nav-child-link.active {
+    background-color: var(--primary);
+    color: white;
+}
+
+.nav-link.active i, 
+.nav-group-btn.active i, 
+.nav-child-link.active i {
+    color: white;
+}
