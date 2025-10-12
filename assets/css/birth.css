@@ -153,10 +153,10 @@ body {
     height: 4px;
 }
 
-.stat-card:nth-child(1)::before { background: var(--primary); }
+.stat-card:nth-child(1)::before { background: var(--info); }
 .stat-card:nth-child(2)::before { background: var(--primary); }
-.stat-card:nth-child(3)::before { background: var(--primary); }
-.stat-card:nth-child(4)::before { background: var(--primary); } 
+.stat-card:nth-child(3)::before { background: var(--warning); }
+.stat-card:nth-child(4)::before { background: var(--success); } 
 
 .stat-card:hover {
     transform: translateY(-5px);

@@ -20,7 +20,7 @@
                 --primary-light: #FFE0B2;
                 --primary-dark: #F57C00;
                 --secondary: #607D8B;
-                --light-bg: #FAFAFA;
+                --light-bg: #F8F9FC;
                 --card-bg: #FFFFFF;
                 --text: #424242;
                 --light-text: #757575;
@@ -53,8 +53,8 @@
             }
 
             .birth-card {
-                background-color: #f5f5f5;
-                border: 1px solid var(--border);
+                background-color: #F8F9FC;
+                /* border: 1px solid var(--border); */
                 border-radius: 12px;
                 box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
                 overflow: hidden;
@@ -63,7 +63,7 @@
 
             .birth-header {
                 background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-                padding: 24px;
+                padding: 20px;
                 border-bottom: 1px solid var(--border);
             }
 
@@ -145,7 +145,7 @@
 
             .stat-card {
                 background: white;
-                border: 1px solid var(--border);
+                /* border: 1px solid var(--border); */
                 border-radius: 10px;
                 padding: 20px;
                 text-align: center;
@@ -209,7 +209,7 @@
             }
 
             .stat-card:nth-child(1) .stat-number {
-                color: var(--primary);
+                color: var(--info);
             }
 
             .stat-card:nth-child(2) .stat-number {
@@ -217,16 +217,17 @@
             }
 
             .stat-card:nth-child(3) .stat-number {
-                color: var(--primary);
+                color: var(--warning);
             }
 
             .stat-card:nth-child(4) .stat-number {
-                color: var(--primary);
+                color: var(--success);
             }
+
 
             .filter-section {
                 background: white;
-                border: 1px solid var(--border);
+                /* border: 1px solid var(--border); */
                 border-radius: 10px;
                 padding: 20px;
                 margin: 20px;
@@ -234,12 +235,13 @@
             }
 
             .table-container {
-                border: 1px solid var(--border);
+                /* border: 1px solid var(--border); */
                 border-radius: 10px;
                 overflow: hidden;
                 margin: 20px;
                 overflow-x: auto;
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+                font-size: 0.9rem;
             }
 
             .table-custom {
@@ -265,11 +267,11 @@
             }
 
             .table-custom td {
-                padding: 16px;
+                padding: 5px;
                 vertical-align: middle;
                 text-align: center;
                 white-space: nowrap;
-                border-bottom: 1px solid var(--border);
+                /* border-bottom: 1px solid var(--border); */
             }
 
             .table-custom tbody tr {
@@ -338,7 +340,7 @@
 
             .pagination-section {
                 background: white;
-                border: 1px solid var(--border);
+                /* border: 1px solid var(--border); */
                 border-radius: 10px;
                 padding: 16px;
                 margin: 20px;
@@ -676,6 +678,36 @@
             .swal2-html-container {
                 font-size: 1rem;
                 line-height: 1.5;
+            }
+
+            .stat-card:nth-child(1)::before {
+                background: var(--info);
+            }
+
+            .stat-card:nth-child(2)::before {
+                background: var(--primary);
+            }
+
+            .stat-card:nth-child(3)::before {
+                background: var(--warning);
+            }
+
+            .stat-card:nth-child(4)::before {
+                background: var(--success);
+            }
+
+            .table-custom tbody tr:nth-child(even) td {
+                background-color: #f7f7f7 !important;
+            }
+
+            .table-custom tbody tr:hover td {
+                background-color: #D2D2D2 !important;
+                transition: background 0.2s ease-in-out;
+            }
+
+            /* Add this new rule for bold first column */
+            .table-custom tbody tr td:first-child {
+                font-weight: bold;
             }
         </style>
     </head>
@@ -3530,8 +3562,7 @@
                                         // Show success Toastify notification
                                         Toastify({
                                             text: isEditMode ?
-                                                'Birth record updated successfully!' :
-                                                'Birth record saved successfully!',
+                                                'Birth record updated successfully!' : 'Birth record saved successfully!',
                                             duration: 3000,
                                             gravity: 'top',
                                             position: 'right',

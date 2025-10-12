@@ -19,6 +19,7 @@ body {
     overflow-x: hidden;
 }
 
+
 .admin-container {
     display: flex;
     min-height: 100vh;
@@ -312,6 +313,7 @@ body {
     flex: 1;
     margin-left: 145px;
     transition: margin-left 0.3s ease;
+    background-color: #F8F9FC;
 }
 
 /* Overlay */
@@ -392,4 +394,4 @@ body {
 .nav-group-btn.active i, 
 .nav-child-link.active i {
     color: white;
-}
+}   

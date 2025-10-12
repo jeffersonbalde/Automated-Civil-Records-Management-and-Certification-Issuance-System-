@@ -171,10 +171,16 @@ function isGroupActive($children)
 
 // Check if mobile (unchanged)
 $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i', $_SERVER['HTTP_USER_AGENT']);
+
+// Get user data (you would replace this with actual user data from your session/database)
+$userName = "John Doe"; // Replace with actual user name
+$userRole = "Administrator"; // Replace with actual user role
+$userInitials = "JD"; // Get initials from user name
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -197,7 +203,7 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
             background: var(--sidebar-bg);
             border-right: 1px solid var(--border);
             color: var(--sidebar-text);
-            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar-header {
@@ -212,25 +218,28 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
         }
 
         .subtitle {
-            color: rgba(255,255,255,0.9);
+            color: rgba(255, 255, 255, 0.9);
             font-size: 0.8rem;
             margin: 0;
         }
 
-        .nav-link, .nav-group-btn {
+        .nav-link,
+        .nav-group-btn {
             color: var(--sidebar-text);
             border-left: 3px solid transparent;
             transition: all 0.3s ease;
             background: transparent;
         }
 
-        .nav-link:hover, .nav-group-btn:hover {
+        .nav-link:hover,
+        .nav-group-btn:hover {
             background: var(--sidebar-hover);
             color: var(--sidebar-text);
             border-left-color: var(--primary);
         }
 
-        .nav-link.active, .nav-group-btn.active {
+        .nav-link.active,
+        .nav-group-btn.active {
             background: var(--primary);
             color: white;
             border-left-color: var(--accent);
@@ -270,7 +279,7 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
         }
 
         .developer-credits {
-            color: rgba(0,0,0,0.6);
+            color: rgba(0, 0, 0, 0.6);
             font-size: 0.75rem;
         }
 
@@ -324,21 +333,143 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
         }
 
         /* Active state improvements */
-        .nav-link.active i, 
-        .nav-group-btn.active i, 
+        .nav-link.active i,
+        .nav-group-btn.active i,
         .nav-child-link.active i {
             color: white;
         }
 
         /* Hover state for icons */
-        .nav-link:hover i, 
-        .nav-group-btn:hover i, 
+        .nav-link:hover i,
+        .nav-group-btn:hover i,
         .nav-child-link:hover i {
             color: var(--primary);
+        }
+
+        /* Profile Avatar Styles */
+        .profile-avatar {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+
+        .profile-avatar:hover {
+            background: var(--sidebar-hover);
+        }
+
+        .avatar-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .profile-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .profile-role {
+            font-size: 0.75rem;
+            color: var(--sidebar-text);
+            opacity: 0.8;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .profile-dropdown {
+            position: relative;
+        }
+
+        .profile-menu {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 0.5rem 0;
+            margin-bottom: 0.5rem;
+            z-index: 1000;
+            display: none;
+            border: 1px solid var(--border);
+        }
+
+        .profile-menu.active {
+            display: block;
+        }
+
+        .profile-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: var(--sidebar-text);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .profile-menu-item:hover {
+            background: var(--sidebar-hover);
+            color: var(--primary);
+        }
+
+        .profile-menu-item i {
+            margin-right: 0.75rem;
+            width: 16px;
+            text-align: center;
+        }
+
+        .profile-menu-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.25rem 0;
+        }
+
+        /* Mobile adjustments for profile menu */
+        @media (max-width: 768px) {
+            .profile-menu {
+                position: fixed;
+                bottom: 70px;
+                left: 10px;
+                right: 10px;
+                width: auto;
+            }
         }
     </style>
     <link rel="stylesheet" href="../../assets/css/sidebar-styles.css">
 </head>
+
 <body>
     <div class="admin-container">
         <!-- Mobile Hamburger Button -->
@@ -360,7 +491,7 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
                                 <img src="../../assets/img/pagadian-logo-remove.png" alt="Pagadian City Logo" class="logo-img">
                                 <h2 class="logo-text">CIVIL REGISTRY OFFICE</h2>
                             </div>
-                            
+
                             <p class="subtitle">
                                 Automated Records Management System
                                 <span class="underline"></span>
@@ -379,9 +510,9 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
                     <nav class="sidebar-nav">
                         <?php foreach ($navItems as $item): ?>
                             <?php if ($item['type'] === 'single'): ?>
-                                <a href="<?php echo $item['path']; ?>" 
-                                   class="nav-link <?php echo isActiveRoute($item['path']) ? 'active' : ''; ?>"
-                                   onclick="handleNavClick()">
+                                <a href="<?php echo $item['path']; ?>"
+                                    class="nav-link <?php echo isActiveRoute($item['path']) ? 'active' : ''; ?>"
+                                    onclick="handleNavClick()">
                                     <i class="<?php echo $item['icon']; ?>"></i>
                                     <span><?php echo $item['label']; ?></span>
                                 </a>
@@ -391,22 +522,22 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
                                 $isExpanded = $isGroupActive;
                                 ?>
                                 <div class="nav-group">
-                                    <button class="nav-group-btn <?php echo $isGroupActive ? 'active' : ''; ?>" 
-                                            onclick="toggleNavGroup('<?php echo $item['id']; ?>')">
+                                    <button class="nav-group-btn <?php echo $isGroupActive ? 'active' : ''; ?>"
+                                        onclick="toggleNavGroup('<?php echo $item['id']; ?>')">
                                         <div class="group-main">
                                             <i class="<?php echo $item['icon']; ?>"></i>
                                             <span><?php echo $item['label']; ?></span>
                                         </div>
-                                        <i class="fas fa-chevron-<?php echo $isExpanded ? 'down' : 'right'; ?>" 
-                                           id="chevron-<?php echo $item['id']; ?>"></i>
+                                        <i class="fas fa-chevron-<?php echo $isExpanded ? 'down' : 'right'; ?>"
+                                            id="chevron-<?php echo $item['id']; ?>"></i>
                                     </button>
-                                    
-                                    <div class="nav-group-children <?php echo $isExpanded ? 'expanded' : ''; ?>" 
-                                         id="children-<?php echo $item['id']; ?>">
+
+                                    <div class="nav-group-children <?php echo $isExpanded ? 'expanded' : ''; ?>"
+                                        id="children-<?php echo $item['id']; ?>">
                                         <?php foreach ($item['children'] as $child): ?>
-                                            <a href="<?php echo $child['path']; ?>" 
-                                               class="nav-child-link <?php echo isActiveRoute($child['path']) ? 'active' : ''; ?>"
-                                               onclick="handleNavClick()">
+                                            <a href="<?php echo $child['path']; ?>"
+                                                class="nav-child-link <?php echo isActiveRoute($child['path']) ? 'active' : ''; ?>"
+                                                onclick="handleNavClick()">
                                                 <i class="<?php echo $child['icon']; ?>"></i>
                                                 <span><?php echo $child['label']; ?></span>
                                             </a>
@@ -418,12 +549,40 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
                     </nav>
                 </div>
 
-                <!-- Sidebar Footer -->
+                <!-- Sidebar Footer with Profile Avatar -->
                 <div class="sidebar-footer">
-                    <button class="logout-btn" onclick="confirmLogout()">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </button>
+                    <div class="profile-dropdown">
+                        <button class="profile-avatar" onclick="toggleProfileMenu()">
+                            <div class="avatar-circle">
+                                <?php echo $userInitials; ?>
+                            </div>
+                            <div class="profile-info">
+                                <p class="profile-name"><?php echo $userName; ?></p>
+                                <p class="profile-role"><?php echo $userRole; ?></p>
+                            </div>
+                            <i class="fas fa-chevron-up" id="profile-chevron"></i>
+                        </button>
+                        
+                        <div class="profile-menu" id="profile-menu">
+                            <a href="#" class="profile-menu-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="#" class="profile-menu-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Account Settings</span>
+                            </a>
+                            <a href="#" class="profile-menu-item">
+                                <i class="fas fa-bell"></i>
+                                <span>Notifications</span>
+                            </a>
+                            <div class="profile-menu-divider"></div>
+                            <button class="profile-menu-item" onclick="confirmLogout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </aside>
@@ -439,97 +598,134 @@ $isMobile = preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Oper
     </div>
 
     <script>
-       // Toggle sidebar on mobile
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.querySelector('.sidebar-overlay');
-    const menuIcon = document.getElementById('menu-icon');
-    
-    sidebar.classList.toggle('mobile-open');
-    overlay.classList.toggle('active');
-    
-    // Change menu icon
-    if (sidebar.classList.contains('mobile-open')) {
-        menuIcon.className = 'fas fa-times';
-    } else {
-        menuIcon.className = 'fas fa-bars';
-    }
-}
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            const menuIcon = document.getElementById('menu-icon');
 
-// Toggle navigation groups
-function toggleNavGroup(groupId) {
-    const children = document.getElementById(`children-${groupId}`);
-    const chevron = document.getElementById(`chevron-${groupId}`);
-    
-    children.classList.toggle('expanded');
-    
-    if (children.classList.contains('expanded')) {
-        chevron.className = 'fas fa-chevron-down';
-    } else {
-        chevron.className = 'fas fa-chevron-right';
-    }
-}
+            sidebar.classList.toggle('mobile-open');
+            overlay.classList.toggle('active');
 
-// Handle navigation clicks on mobile
-function handleNavClick() {
-    if (window.innerWidth <= 768) {
-        toggleSidebar();
-    }
-}
-
-// Confirm logout
-function confirmLogout() {
-    if (confirm("Are you sure you want to logout?")) {
-        // Show loading state
-        const loading = document.createElement('div');
-        loading.innerHTML = 'Logging out...';
-        loading.style.position = 'fixed';
-        loading.style.top = '50%';
-        loading.style.left = '50%';
-        loading.style.transform = 'translate(-50%, -50%)';
-        loading.style.background = 'white';
-        loading.style.padding = '20px';
-        loading.style.borderRadius = '8px';
-        loading.style.zIndex = '10000';
-        document.body.appendChild(loading);
-        // Simulate logout process
-        setTimeout(() => {
-            window.location.href = '../../handlers/logout.php';
-        }, 1000);
-    }
-}
-
-// Close sidebar when clicking on overlay
-document.querySelector('.sidebar-overlay').addEventListener('click', toggleSidebar);
-
-// Handle window resize
-window.addEventListener('resize', function() {
-    if (window.innerWidth > 768) {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.querySelector('.sidebar-overlay');
-        const menuIcon = document.getElementById('menu-icon');
-        
-        sidebar.classList.remove('mobile-open');
-        overlay.classList.remove('active');
-        menuIcon.className = 'fas fa-bars';
-    }
-});
-
-// Initialize sidebar state
-document.addEventListener('DOMContentLoaded', function() {
-    // Auto-expand active groups
-    const activeGroups = document.querySelectorAll('.nav-group-btn.active');
-    activeGroups.forEach(btn => {
-        const groupId = btn.id.replace('btn-', '');
-        const children = document.getElementById(`children-${groupId}`);
-        const chevron = document.getElementById(`chevron-${groupId}`);
-        
-        if (children && chevron) {
-            children.classList.add('expanded');
-            chevron.className = 'fas fa-chevron-down';
+            // Change menu icon
+            if (sidebar.classList.contains('mobile-open')) {
+                menuIcon.className = 'fas fa-times';
+            } else {
+                menuIcon.className = 'fas fa-bars';
+            }
+            
+            // Close profile menu when sidebar is toggled
+            closeProfileMenu();
         }
-    });
-});
+
+        // Toggle navigation groups
+        function toggleNavGroup(groupId) {
+            const children = document.getElementById(`children-${groupId}`);
+            const chevron = document.getElementById(`chevron-${groupId}`);
+
+            children.classList.toggle('expanded');
+
+            if (children.classList.contains('expanded')) {
+                chevron.className = 'fas fa-chevron-down';
+            } else {
+                chevron.className = 'fas fa-chevron-right';
+            }
+        }
+
+        // Toggle profile menu
+        function toggleProfileMenu() {
+            const profileMenu = document.getElementById('profile-menu');
+            const profileChevron = document.getElementById('profile-chevron');
+            
+            profileMenu.classList.toggle('active');
+            
+            if (profileMenu.classList.contains('active')) {
+                profileChevron.className = 'fas fa-chevron-down';
+            } else {
+                profileChevron.className = 'fas fa-chevron-up';
+            }
+        }
+        
+        // Close profile menu
+        function closeProfileMenu() {
+            const profileMenu = document.getElementById('profile-menu');
+            const profileChevron = document.getElementById('profile-chevron');
+            
+            profileMenu.classList.remove('active');
+            profileChevron.className = 'fas fa-chevron-up';
+        }
+
+        // Handle navigation clicks on mobile
+        function handleNavClick() {
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        }
+
+        // Confirm logout
+        function confirmLogout() {
+            if (confirm("Are you sure you want to logout?")) {
+                // Show loading state
+                const loading = document.createElement('div');
+                loading.innerHTML = 'Logging out...';
+                loading.style.position = 'fixed';
+                loading.style.top = '50%';
+                loading.style.left = '50%';
+                loading.style.transform = 'translate(-50%, -50%)';
+                loading.style.background = 'white';
+                loading.style.padding = '20px';
+                loading.style.borderRadius = '8px';
+                loading.style.zIndex = '10000';
+                document.body.appendChild(loading);
+                // Simulate logout process
+                setTimeout(() => {
+                    window.location.href = '../../handlers/logout.php';
+                }, 1000);
+            }
+        }
+
+        // Close sidebar when clicking on overlay
+        document.querySelector('.sidebar-overlay').addEventListener('click', toggleSidebar);
+
+        // Close profile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const profileDropdown = document.querySelector('.profile-dropdown');
+            const profileMenu = document.getElementById('profile-menu');
+            
+            if (!profileDropdown.contains(event.target) && profileMenu.classList.contains('active')) {
+                closeProfileMenu();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.querySelector('.sidebar-overlay');
+                const menuIcon = document.getElementById('menu-icon');
+
+                sidebar.classList.remove('mobile-open');
+                overlay.classList.remove('active');
+                menuIcon.className = 'fas fa-bars';
+            }
+        });
+
+        // Initialize sidebar state
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-expand active groups
+            const activeGroups = document.querySelectorAll('.nav-group-btn.active');
+            activeGroups.forEach(btn => {
+                const groupId = btn.id.replace('btn-', '');
+                const children = document.getElementById(`children-${groupId}`);
+                const chevron = document.getElementById(`chevron-${groupId}`);
+
+                if (children && chevron) {
+                    children.classList.add('expanded');
+                    chevron.className = 'fas fa-chevron-down';
+                }
+            });
+        });
     </script>
 </body>
+
 </html>

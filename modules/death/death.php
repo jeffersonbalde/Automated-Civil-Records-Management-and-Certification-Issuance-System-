@@ -49,8 +49,8 @@
         }
 
         .death-card {
-            background-color: #f5f5f5;
-            border: 1px solid var(--border);
+            background-color: #F8F9FC;
+            /* border: 1px solid var(--border); */
             border-radius: 12px;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
             overflow: hidden;
@@ -59,7 +59,7 @@
 
         .death-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            padding: 24px;
+            padding: 20px;
             border-bottom: 1px solid var(--border);
         }
 
@@ -141,7 +141,7 @@
 
         .stat-card {
             background: white;
-            border: 1px solid var(--border);
+            /* border: 1px solid var(--border); */
             border-radius: 10px;
             padding: 20px;
             text-align: center;
@@ -205,7 +205,7 @@
         }
 
         .stat-card:nth-child(1) .stat-number {
-            color: var(--primary);
+            color: var(--info);
         }
 
         .stat-card:nth-child(2) .stat-number {
@@ -213,16 +213,16 @@
         }
 
         .stat-card:nth-child(3) .stat-number {
-            color: var(--primary);
+            color: var(--warning);
         }
 
         .stat-card:nth-child(4) .stat-number {
-            color: var(--primary);
+            color: var(--success);
         }
 
         .filter-section {
             background: white;
-            border: 1px solid var(--border);
+            /* border: 1px solid var(--border); */
             border-radius: 10px;
             padding: 20px;
             margin: 20px;
@@ -230,12 +230,13 @@
         }
 
         .table-container {
-            border: 1px solid var(--border);
+            /* border: 1px solid var(--border); */
             border-radius: 10px;
             overflow: hidden;
             margin: 20px;
             overflow-x: auto;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            font-size: 0.9rem;
         }
 
         .table-custom {
@@ -261,11 +262,11 @@
         }
 
         .table-custom td {
-            padding: 16px;
+            padding: 5px;
             vertical-align: middle;
             text-align: center;
             white-space: nowrap;
-            border-bottom: 1px solid var(--border);
+            /* border-bottom: 1px solid var(--border); */
         }
 
         .table-custom tbody tr {
@@ -334,7 +335,7 @@
 
         .pagination-section {
             background: white;
-            border: 1px solid var(--border);
+            /* border: 1px solid var(--border); */
             border-radius: 10px;
             padding: 16px;
             margin: 20px;
@@ -764,6 +765,36 @@
             .date-filter-section .form-text {
                 display: none;
             }
+        }
+
+        .stat-card:nth-child(1)::before {
+            background: var(--info);
+        }
+
+        .stat-card:nth-child(2)::before {
+            background: var(--primary);
+        }
+
+        .stat-card:nth-child(3)::before {
+            background: var(--warning);
+        }
+
+        .stat-card:nth-child(4)::before {
+            background: var(--success);
+        }
+
+        .table-custom tbody tr:nth-child(even) td {
+            background-color: #f7f7f7 !important;
+        }
+
+        .table-custom tbody tr:hover td {
+            background-color: #D2D2D2 !important;
+            transition: background 0.2s ease-in-out;
+        }
+
+        /* Add this new rule for bold first column */
+        .table-custom tbody tr td:first-child {
+            font-weight: bold;
         }
     </style>
 </head>
@@ -1334,11 +1365,11 @@
                 tr.id = `death-record-${record.death_id}`;
 
                 tr.dataset.recordId = record.death_id;
-                tr.dataset.deceasedName = record.first_name && record.last_name ? 
+                tr.dataset.deceasedName = record.first_name && record.last_name ?
                     `${record.first_name} ${record.middle_name || ''} ${record.last_name}`.replace(/\s+/g, ' ').trim() : '';
                 tr.dataset.regNumber = record.registry_number || '';
 
-                const deceasedName = record.first_name && record.last_name ? 
+                const deceasedName = record.first_name && record.last_name ?
                     `${record.first_name} ${record.middle_name || ''} ${record.last_name}`.replace(/\s+/g, ' ').trim() : 'N/A';
 
                 const age = this.calculateAge(record.date_of_birth, record.date_of_death);
@@ -1379,10 +1410,10 @@
                 try {
                     const birthDate = new Date(birthdate);
                     const deathDate = new Date(deathdate);
-                    
+
                     let age = deathDate.getFullYear() - birthDate.getFullYear();
                     const monthDiff = deathDate.getMonth() - birthDate.getMonth();
-                    
+
                     if (monthDiff < 0 || (monthDiff === 0 && deathDate.getDate() < birthDate.getDate())) {
                         age--;
                     }
@@ -1804,14 +1835,14 @@
                 this.setValue('sex', death.sex);
                 this.setValue('date_of_death', this.formatDateForInput(death.date_of_death));
                 this.setValue('date_of_birth', this.formatDateForInput(death.date_of_birth));
-                
+
                 // Age calculation
                 if (death.date_of_birth && death.date_of_death) {
                     const age = this.calculateAge(death.date_of_birth, death.date_of_death);
                     this.setValue('age_years', age >= 1 ? age : '');
                     this.setValue('age_months', age < 1 ? '0' : '');
                 }
-                
+
                 this.setValue('place_of_death', death.place_of_death);
                 this.setValue('civil_status', death.civil_status);
                 this.setValue('religion', death.religion);
@@ -1826,12 +1857,12 @@
                 this.setValue('antecedent_cause', death.antecedent_cause);
                 this.setValue('underlying_cause', death.underlying_cause);
                 this.setValue('other_significant_conditions', death.other_significant_conditions);
-                
+
                 // Maternal condition (for females 15-49)
                 if (death.sex === 'Female') {
                     this.setValue('maternal_condition', death.maternal_condition);
                 }
-                
+
                 this.setValue('manner_of_death', death.manner_of_death);
                 this.setValue('place_of_occurrence', death.place_of_occurrence);
                 this.setValue('autopsy', death.autopsy);
@@ -2082,91 +2113,91 @@
             }
 
             displayDeathModalRecordDetails(data) {
-    const death = data.death_record;
+                const death = data.death_record;
 
-    document.getElementById('deathModalLoadingState').style.display = 'none';
-    document.getElementById('deathModalRecordDetails').style.display = 'block';
+                document.getElementById('deathModalLoadingState').style.display = 'none';
+                document.getElementById('deathModalRecordDetails').style.display = 'block';
 
-    // Registry Information
-    document.getElementById('deathModalRegistryNumber').textContent = death.registry_number || 'N/A';
-    document.getElementById('deathModalRecordId').textContent = death.death_id || 'N/A';
-    document.getElementById('deathModalDateRegistered').textContent = this.formatDateTime(death.date_registered);
+                // Registry Information
+                document.getElementById('deathModalRegistryNumber').textContent = death.registry_number || 'N/A';
+                document.getElementById('deathModalRecordId').textContent = death.death_id || 'N/A';
+                document.getElementById('deathModalDateRegistered').textContent = this.formatDateTime(death.date_registered);
 
-    // Personal Information
-    document.getElementById('deathModalDeceasedName').textContent = this.formatFullName(
-        death.first_name,
-        death.middle_name,
-        death.last_name
-    );
-    document.getElementById('deathModalSex').textContent = death.sex || 'N/A';
-    document.getElementById('deathModalCivilStatus').textContent = death.civil_status || 'N/A';
-    document.getElementById('deathModalDateOfDeath').textContent = this.formatDate(death.date_of_death);
-    document.getElementById('deathModalDateOfBirth').textContent = this.formatDate(death.date_of_birth);
-    document.getElementById('deathModalAge').textContent = this.calculateAge(death.date_of_birth, death.date_of_death);
+                // Personal Information
+                document.getElementById('deathModalDeceasedName').textContent = this.formatFullName(
+                    death.first_name,
+                    death.middle_name,
+                    death.last_name
+                );
+                document.getElementById('deathModalSex').textContent = death.sex || 'N/A';
+                document.getElementById('deathModalCivilStatus').textContent = death.civil_status || 'N/A';
+                document.getElementById('deathModalDateOfDeath').textContent = this.formatDate(death.date_of_death);
+                document.getElementById('deathModalDateOfBirth').textContent = this.formatDate(death.date_of_birth);
+                document.getElementById('deathModalAge').textContent = this.calculateAge(death.date_of_birth, death.date_of_death);
 
-    // Location Information
-    document.getElementById('deathModalPlaceOfDeath').textContent = death.place_of_death || 'N/A';
-    document.getElementById('deathModalResidence').textContent = death.residence || 'N/A';
-    document.getElementById('deathModalCitizenship').textContent = death.citizenship || 'N/A';
+                // Location Information
+                document.getElementById('deathModalPlaceOfDeath').textContent = death.place_of_death || 'N/A';
+                document.getElementById('deathModalResidence').textContent = death.residence || 'N/A';
+                document.getElementById('deathModalCitizenship').textContent = death.citizenship || 'N/A';
 
-    // Additional Details
-    document.getElementById('deathModalReligion').textContent = death.religion || 'N/A';
-    document.getElementById('deathModalOccupation').textContent = death.occupation || 'N/A';
-    document.getElementById('deathModalFatherName').textContent = death.father_name || 'N/A';
-    document.getElementById('deathModalMotherName').textContent = death.mother_maiden_name || 'N/A';
+                // Additional Details
+                document.getElementById('deathModalReligion').textContent = death.religion || 'N/A';
+                document.getElementById('deathModalOccupation').textContent = death.occupation || 'N/A';
+                document.getElementById('deathModalFatherName').textContent = death.father_name || 'N/A';
+                document.getElementById('deathModalMotherName').textContent = death.mother_maiden_name || 'N/A';
 
-    // Medical Information
-    document.getElementById('deathModalImmediateCause').textContent = death.immediate_cause || 'N/A';
-    document.getElementById('deathModalAntecedentCause').textContent = death.antecedent_cause || 'N/A';
-    document.getElementById('deathModalUnderlyingCause').textContent = death.underlying_cause || 'N/A';
-    document.getElementById('deathModalOtherConditions').textContent = death.other_significant_conditions || 'N/A';
-    document.getElementById('deathModalMannerOfDeath').textContent = death.manner_of_death || 'N/A';
-    document.getElementById('deathModalPlaceOfOccurrence').textContent = death.place_of_occurrence || 'N/A';
-    document.getElementById('deathModalAutopsy').textContent = death.autopsy || 'N/A';
-    document.getElementById('deathModalAttendant').textContent = death.attendant || 'N/A';
-    
-    // Show/hide attendant other
-    if (death.attendant_other) {
-        document.getElementById('deathModalAttendantOtherContainer').style.display = 'block';
-        document.getElementById('deathModalAttendantOther').textContent = death.attendant_other;
-    } else {
-        document.getElementById('deathModalAttendantOtherContainer').style.display = 'none';
-    }
+                // Medical Information
+                document.getElementById('deathModalImmediateCause').textContent = death.immediate_cause || 'N/A';
+                document.getElementById('deathModalAntecedentCause').textContent = death.antecedent_cause || 'N/A';
+                document.getElementById('deathModalUnderlyingCause').textContent = death.underlying_cause || 'N/A';
+                document.getElementById('deathModalOtherConditions').textContent = death.other_significant_conditions || 'N/A';
+                document.getElementById('deathModalMannerOfDeath').textContent = death.manner_of_death || 'N/A';
+                document.getElementById('deathModalPlaceOfOccurrence').textContent = death.place_of_occurrence || 'N/A';
+                document.getElementById('deathModalAutopsy').textContent = death.autopsy || 'N/A';
+                document.getElementById('deathModalAttendant').textContent = death.attendant || 'N/A';
 
-    // Attended duration
-    const attendedFrom = death.attended_from ? this.formatDate(death.attended_from) : '';
-    const attendedTo = death.attended_to ? this.formatDate(death.attended_to) : '';
-    document.getElementById('deathModalAttendedDuration').textContent = 
-        attendedFrom && attendedTo ? `${attendedFrom} to ${attendedTo}` : 'N/A';
+                // Show/hide attendant other
+                if (death.attendant_other) {
+                    document.getElementById('deathModalAttendantOtherContainer').style.display = 'block';
+                    document.getElementById('deathModalAttendantOther').textContent = death.attendant_other;
+                } else {
+                    document.getElementById('deathModalAttendantOtherContainer').style.display = 'none';
+                }
 
-    // Maternal condition (for females)
-    if (death.sex === 'Female' && death.maternal_condition) {
-        document.getElementById('deathModalMaternalConditionContainer').style.display = 'block';
-        document.getElementById('deathModalMaternalCondition').textContent = death.maternal_condition;
-    } else {
-        document.getElementById('deathModalMaternalConditionContainer').style.display = 'none';
-    }
+                // Attended duration
+                const attendedFrom = death.attended_from ? this.formatDate(death.attended_from) : '';
+                const attendedTo = death.attended_to ? this.formatDate(death.attended_to) : '';
+                document.getElementById('deathModalAttendedDuration').textContent =
+                    attendedFrom && attendedTo ? `${attendedFrom} to ${attendedTo}` : 'N/A';
 
-    // Death Certification
-    document.getElementById('deathModalCertifierName').textContent = death.certifier_name || 'N/A';
-    document.getElementById('deathModalCertifierTitle').textContent = death.certifier_title || 'N/A';
-    document.getElementById('deathModalAttendedDeceased').textContent = death.attended_deceased || 'N/A';
-    document.getElementById('deathModalDeathOccurredTime').textContent = death.death_occurred_time || 'N/A';
-    document.getElementById('deathModalCertifierDate').textContent = death.certifier_date ? this.formatDate(death.certifier_date) : 'N/A';
+                // Maternal condition (for females)
+                if (death.sex === 'Female' && death.maternal_condition) {
+                    document.getElementById('deathModalMaternalConditionContainer').style.display = 'block';
+                    document.getElementById('deathModalMaternalCondition').textContent = death.maternal_condition;
+                } else {
+                    document.getElementById('deathModalMaternalConditionContainer').style.display = 'none';
+                }
 
-    // Burial Details
-    document.getElementById('deathModalCorpseDisposal').textContent = death.corpse_disposal || 'N/A';
-    document.getElementById('deathModalBurialPermitNumber').textContent = death.burial_permit_number || 'N/A';
-    document.getElementById('deathModalBurialPermitDate').textContent = death.burial_permit_date ? this.formatDate(death.burial_permit_date) : 'N/A';
-    document.getElementById('deathModalTransferPermitNumber').textContent = death.transfer_permit_number || 'N/A';
-    document.getElementById('deathModalCemeteryName').textContent = death.cemetery_name || 'N/A';
+                // Death Certification
+                document.getElementById('deathModalCertifierName').textContent = death.certifier_name || 'N/A';
+                document.getElementById('deathModalCertifierTitle').textContent = death.certifier_title || 'N/A';
+                document.getElementById('deathModalAttendedDeceased').textContent = death.attended_deceased || 'N/A';
+                document.getElementById('deathModalDeathOccurredTime').textContent = death.death_occurred_time || 'N/A';
+                document.getElementById('deathModalCertifierDate').textContent = death.certifier_date ? this.formatDate(death.certifier_date) : 'N/A';
 
-    // Informant Information
-    document.getElementById('deathModalInformantName').textContent = death.informant_name || 'N/A';
-    document.getElementById('deathModalInformantRelationship').textContent = death.informant_relationship || 'N/A';
-    document.getElementById('deathModalInformantDate').textContent = death.informant_date ? this.formatDate(death.informant_date) : 'N/A';
-    document.getElementById('deathModalInformantAddress').textContent = death.informant_address || 'N/A';
-}
+                // Burial Details
+                document.getElementById('deathModalCorpseDisposal').textContent = death.corpse_disposal || 'N/A';
+                document.getElementById('deathModalBurialPermitNumber').textContent = death.burial_permit_number || 'N/A';
+                document.getElementById('deathModalBurialPermitDate').textContent = death.burial_permit_date ? this.formatDate(death.burial_permit_date) : 'N/A';
+                document.getElementById('deathModalTransferPermitNumber').textContent = death.transfer_permit_number || 'N/A';
+                document.getElementById('deathModalCemeteryName').textContent = death.cemetery_name || 'N/A';
+
+                // Informant Information
+                document.getElementById('deathModalInformantName').textContent = death.informant_name || 'N/A';
+                document.getElementById('deathModalInformantRelationship').textContent = death.informant_relationship || 'N/A';
+                document.getElementById('deathModalInformantDate').textContent = death.informant_date ? this.formatDate(death.informant_date) : 'N/A';
+                document.getElementById('deathModalInformantAddress').textContent = death.informant_address || 'N/A';
+            }
             showDeathModalError(message) {
                 document.getElementById('deathModalLoadingState').style.display = 'none';
                 document.getElementById('deathModalErrorState').style.display = 'block';
@@ -2479,7 +2510,7 @@
             generateCertificateHTML(death) {
                 const deathDate = death.date_of_death ? new Date(death.date_of_death) : new Date();
                 const birthDate = death.date_of_birth ? new Date(death.date_of_birth) : null;
-                
+
                 const age = this.calculateAge(death.date_of_birth, death.date_of_death);
                 const ageDisplay = age >= 1 ? `${age} years` : 'Under 1 year';
 
