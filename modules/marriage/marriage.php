@@ -796,6 +796,65 @@
         .table-custom tbody tr td:first-child {
             font-weight: bold;
         }
+
+        /* Horizontal button group styling for marriage table */
+.btn-group.btn-group-sm {
+    gap: 2px;
+    flex-wrap: nowrap;
+}
+
+.btn-group .btn-action {
+    margin: 0;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+}
+
+.btn-group .btn-action i {
+    font-size: 0.8rem;
+}
+
+/* Ensure the action column has proper width for horizontal layout */
+.table-custom th:nth-child(2),
+.table-custom td:nth-child(2) {
+    width: 160px;
+    min-width: 160px;
+    max-width: 160px;
+    text-align: center;
+}
+
+/* Remove text labels from buttons to make them more compact */
+.btn-group .btn-action {
+    font-size: 0; /* Hide text */
+}
+
+.btn-group .btn-action i {
+    font-size: 0.8rem; /* Show only icons */
+}
+
+/* Optional: Add tooltips for better UX */
+.btn-action {
+    position: relative;
+}
+
+/* .btn-action:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    z-index: 1000;
+} */
     </style>
 </head>
 
@@ -937,22 +996,20 @@
                 <!-- Table Container -->
                 <div class="table-container" id="tableContainer">
                     <table class="table table-custom table-hover">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Registry No.</th>
-                                <th>Husband Name</th>
-                                <th>Wife Name</th>
-                                <th>Date of Marriage</th>
-                                <th>Place of Marriage</th>
-                                <th>Husband Age</th>
-                                <th>Wife Age</th>
-                                <!-- <th>Civil Status</th> -->
-                                <th>Date Registered</th>
-                                <!-- <th>Status</th> -->
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
+<thead>
+    <tr>
+        <th>#</th>
+        <th>Action</th>
+        <th>Registry No.</th>
+        <th>Husband Name</th>
+        <th>Wife Name</th>
+        <th>Date of Marriage</th>
+        <th>Place of Marriage</th>
+        <th>Husband Age</th>
+        <th>Wife Age</th>
+        <th>Date Registered</th>
+    </tr>
+</thead>
                         <tbody id="recordsTable">
                             <!-- Records will be populated by JavaScript -->
                         </tbody>
@@ -1372,59 +1429,56 @@
                 });
             }
 
-            createTableRow(record, rowNumber) {
-                const tr = document.createElement('tr');
-                tr.id = `marriage-record-${record.marriage_id}`;
+createTableRow(record, rowNumber) {
+    const tr = document.createElement('tr');
+    tr.id = `marriage-record-${record.marriage_id}`;
 
-                // Store record data in data attributes for quick access
-                tr.dataset.recordId = record.marriage_id;
-                tr.dataset.husbandName = record.husband_full_name ? record.husband_full_name.replace(/\s+/g, ' ').trim() : '';
-                tr.dataset.wifeName = record.wife_full_name ? record.wife_full_name.replace(/\s+/g, ' ').trim() : '';
-                tr.dataset.regNumber = record.registry_number || '';
+    // Store record data in data attributes for quick access
+    tr.dataset.recordId = record.marriage_id;
+    tr.dataset.husbandName = record.husband_full_name ? record.husband_full_name.replace(/\s+/g, ' ').trim() : '';
+    tr.dataset.wifeName = record.wife_full_name ? record.wife_full_name.replace(/\s+/g, ' ').trim() : '';
+    tr.dataset.regNumber = record.registry_number || '';
 
-                // Calculate ages
-                const husbandAge = record.husband_birthdate ? this.calculateAge(record.husband_birthdate) : 'N/A';
-                const wifeAge = record.wife_birthdate ? this.calculateAge(record.wife_birthdate) : 'N/A';
+    // Calculate ages
+    const husbandAge = record.husband_birthdate ? this.calculateAge(record.husband_birthdate) : 'N/A';
+    const wifeAge = record.wife_birthdate ? this.calculateAge(record.wife_birthdate) : 'N/A';
 
-                // Safely handle null values and clean up names
-                const husbandName = record.husband_full_name ?
-                    record.husband_full_name.replace(/\s+/g, ' ').trim() : 'N/A';
-                const wifeName = record.wife_full_name ?
-                    record.wife_full_name.replace(/\s+/g, ' ').trim() : 'N/A';
+    // Safely handle null values and clean up names
+    const husbandName = record.husband_full_name ?
+        record.husband_full_name.replace(/\s+/g, ' ').trim() : 'N/A';
+    const wifeName = record.wife_full_name ?
+        record.wife_full_name.replace(/\s+/g, ' ').trim() : 'N/A';
 
-                // Get civil status (use husband's civil status as default)
-                const civilStatus = record.husband_civil_status || record.wife_civil_status || 'N/A';
+    tr.innerHTML = `
+        <td>${rowNumber}</td>
+        <td>
+            <div class="btn-group btn-group-sm" role="group">
+                <button class="btn-action btn-view" title="View Details" onclick="marriageManager.viewRecord(${record.marriage_id || 0})">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn-action btn-certificate" title="Generate Certificate" onclick="marriageManager.generateCertificate(${record.marriage_id || 0})">
+                    <i class="fas fa-certificate"></i>
+                </button>
+                <button class="btn-action btn-edit" title="Edit" onclick="marriageManager.editRecord(${record.marriage_id || 0})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn-action btn-delete" title="Delete" onclick="marriageManager.deleteRecord(${record.marriage_id || 0})" data-record-id="${record.marriage_id}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </td>
+        <td>${record.registry_number || 'N/A'}</td>
+        <td>${husbandName}</td>
+        <td>${wifeName}</td>
+        <td>${record.date_of_marriage ? this.formatDate(record.date_of_marriage) : 'N/A'}</td>
+        <td>${record.place_of_marriage || 'N/A'}</td>
+        <td>${husbandAge}</td>
+        <td>${wifeAge}</td>
+        <td>${record.date_registered ? this.formatDate(record.date_registered) : 'N/A'}</td>
+    `;
 
-                tr.innerHTML = `
-            <td>${rowNumber}</td>
-            <td>${record.registry_number || 'N/A'}</td>
-            <td>${husbandName}</td>
-            <td>${wifeName}</td>
-            <td>${record.date_of_marriage ? this.formatDate(record.date_of_marriage) : 'N/A'}</td>
-            <td>${record.place_of_marriage || 'N/A'}</td>
-            <td>${husbandAge}</td>
-            <td>${wifeAge}</td>
-            <td>${record.date_registered ? this.formatDate(record.date_registered) : 'N/A'}</td>
-            <td>
-                <div class="btn-group" role="group">
-                    <button class="btn-action btn-view" title="View Details" onclick="marriageManager.viewRecord(${record.marriage_id || 0})">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn-action btn-certificate" title="Generate Certificate" onclick="marriageManager.generateCertificate(${record.marriage_id || 0})">
-                        <i class="fas fa-certificate"></i>
-                    </button>
-                    <button class="btn-action btn-edit" title="Edit" onclick="marriageManager.editRecord(${record.marriage_id || 0})">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn-action btn-delete" title="Delete" onclick="marriageManager.deleteRecord(${record.marriage_id || 0})" data-record-id="${record.marriage_id}">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            </td>
-        `;
-
-                return tr;
-            }
+    return tr;
+}
 
             // Add this helper method to calculate age
             calculateAge(birthdate) {

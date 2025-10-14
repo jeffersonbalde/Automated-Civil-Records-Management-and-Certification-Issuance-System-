@@ -617,7 +617,7 @@
             }
 
             .table-custom tbody tr:nth-child(even) td {
-                background-color: #f7f7f7 !important;
+                background-color: #F2F2F2 !important;
                 /* light grey */
             }
 
@@ -709,6 +709,71 @@
             .table-custom tbody tr td:first-child {
                 font-weight: bold;
             }
+
+            .btn-group-vertical.btn-group-sm {
+    gap: 2px;
+}
+
+/* Horizontal button group styling */
+.btn-group.btn-group-sm {
+    gap: 2px;
+    flex-wrap: nowrap;
+}
+
+.btn-group .btn-action {
+    margin: 0;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+}
+
+.btn-group .btn-action i {
+    font-size: 0.8rem;
+}
+
+/* Ensure the action column has proper width for horizontal layout */
+.table-custom th:nth-child(2),
+.table-custom td:nth-child(2) {
+    width: 160px;
+    min-width: 160px;
+    max-width: 160px;
+    text-align: center;
+}
+
+/* Remove text labels from buttons to make them more compact */
+.btn-group .btn-action {
+    font-size: 0; /* Hide text */
+}
+
+.btn-group .btn-action i {
+    font-size: 0.8rem; /* Show only icons */
+}
+
+/* Optional: Add tooltips for better UX */
+.btn-action {
+    position: relative;
+}
+
+/* .btn-action:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    z-index: 1000;
+} */
+
+
         </style>
     </head>
 
@@ -811,13 +876,13 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Action</th>
                                     <th>Registration No.</th>
                                     <th>Full Name</th>
                                     <th>Date of Birth</th>
                                     <th>Place of Birth</th>
                                     <th>Parents</th>
                                     <th>Date Registered</th>
-                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="recordsTable">
@@ -1129,46 +1194,47 @@
                     });
                 }
 
-                // ENHANCED createTableRow method in BirthRecordsManager class
                 createTableRow(record, rowNumber) {
-                    const tr = document.createElement('tr');
-                    tr.id = `birth-record-${record.birth_id}`;
+    const tr = document.createElement('tr');
+    tr.id = `birth-record-${record.birth_id}`;
 
-                    // Store record data in data attributes for quick access
-                    tr.dataset.recordId = record.birth_id;
-                    tr.dataset.fullName = record.full_name ? record.full_name.replace(/\s+/g, ' ').trim() : '';
-                    tr.dataset.regNumber = record.registry_number || '';
+    // Store record data in data attributes for quick access
+    tr.dataset.recordId = record.birth_id;
+    tr.dataset.fullName = record.full_name ? record.full_name.replace(/\s+/g, ' ').trim() : '';
+    tr.dataset.regNumber = record.registry_number || '';
 
-                    // Safely handle null values and clean up full name
-                    const fullName = record.full_name ?
-                        record.full_name.replace(/\s+/g, ' ').trim() : 'N/A';
+    // Safely handle null values and clean up full name
+    const fullName = record.full_name ?
+        record.full_name.replace(/\s+/g, ' ').trim() : 'N/A';
 
-                    tr.innerHTML = `
+    tr.innerHTML = `
         <td>${rowNumber}</td>
+        <td>
+            <div class="btn-group btn-group-sm" role="group">
+                <button class="btn-action btn-view" title="View Details" onclick="birthManager.viewRecord(${record.birth_id || 0})">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn-action btn-certificate" title="Generate Certificate" onclick="birthManager.generateCertificate(${record.birth_id || 0})">
+                    <i class="fas fa-certificate"></i>
+                </button>
+                <button class="btn-action btn-edit" title="Edit" onclick="birthManager.editRecord(${record.birth_id || 0})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn-action btn-delete" title="Delete" onclick="birthManager.deleteRecord(${record.birth_id || 0})" data-record-id="${record.birth_id}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </td>
         <td>${record.registry_number || 'N/A'}</td>
         <td>${fullName}</td>
         <td>${record.date_of_birth ? this.formatDate(record.date_of_birth) : 'N/A'}</td>
         <td>${record.place_of_birth || 'N/A'}</td>
         <td>${record.parents && record.parents !== ' & ' ? record.parents : 'N/A'}</td>
         <td>${record.date_registered ? this.formatDate(record.date_registered) : 'N/A'}</td>
-        <td>
-            <button class="btn-action btn-view" title="View Details" onclick="birthManager.viewRecord(${record.birth_id || 0})">
-                <i class="fas fa-eye"></i>
-            </button>
-            <button class="btn-action btn-certificate" title="Generate Certificate" onclick="birthManager.generateCertificate(${record.birth_id || 0})">
-                <i class="fas fa-certificate"></i>
-            </button>
-            <button class="btn-action btn-edit" title="Edit" onclick="birthManager.editRecord(${record.birth_id || 0})">
-                <i class="fas fa-edit"></i>
-            </button>
-            <button class="btn-action btn-delete" title="Delete" onclick="birthManager.deleteRecord(${record.birth_id || 0})" data-record-id="${record.birth_id}">
-                <i class="fas fa-trash"></i>
-            </button>
-        </td>
-        `;
+    `;
 
-                    return tr;
-                }
+    return tr;
+}
 
                 updatePagination(totalRecords, currentPage, totalPages) {
                     this.totalPages = totalPages;

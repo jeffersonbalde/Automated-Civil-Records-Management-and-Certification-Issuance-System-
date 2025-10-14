@@ -796,6 +796,65 @@
         .table-custom tbody tr td:first-child {
             font-weight: bold;
         }
+
+        /* Horizontal button group styling for death table */
+.btn-group.btn-group-sm {
+    gap: 2px;
+    flex-wrap: nowrap;
+}
+
+.btn-group .btn-action {
+    margin: 0;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+}
+
+.btn-group .btn-action i {
+    font-size: 0.8rem;
+}
+
+/* Ensure the action column has proper width for horizontal layout */
+.table-custom th:nth-child(2),
+.table-custom td:nth-child(2) {
+    width: 160px;
+    min-width: 160px;
+    max-width: 160px;
+    text-align: center;
+}
+
+/* Remove text labels from buttons to make them more compact */
+.btn-group .btn-action {
+    font-size: 0; /* Hide text */
+}
+
+.btn-group .btn-action i {
+    font-size: 0.8rem; /* Show only icons */
+}
+
+/* Optional: Add tooltips for better UX */
+.btn-action {
+    position: relative;
+}
+
+/* .btn-action:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    z-index: 1000;
+} */
     </style>
 </head>
 
@@ -937,21 +996,21 @@
                 <!-- Table Container -->
                 <div class="table-container" id="tableContainer">
                     <table class="table table-custom table-hover">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Registry No.</th>
-                                <th>Deceased Name</th>
-                                <th>Sex</th>
-                                <th>Date of Death</th>
-                                <th>Date of Birth</th>
-                                <th>Age</th>
-                                <th>Place of Death</th>
-                                <th>Civil Status</th>
-                                <th>Date Registered</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
+<thead>
+    <tr>
+        <th>#</th>
+        <th>Action</th>
+        <th>Registry No.</th>
+        <th>Deceased Name</th>
+        <th>Sex</th>
+        <th>Date of Death</th>
+        <th>Date of Birth</th>
+        <th>Age</th>
+        <th>Place of Death</th>
+        <th>Civil Status</th>
+        <th>Date Registered</th>
+    </tr>
+</thead>
                         <tbody id="recordsTable">
                             <!-- Records will be populated by JavaScript -->
                         </tbody>
@@ -1360,51 +1419,51 @@
                 });
             }
 
-            createTableRow(record, rowNumber) {
-                const tr = document.createElement('tr');
-                tr.id = `death-record-${record.death_id}`;
+createTableRow(record, rowNumber) {
+    const tr = document.createElement('tr');
+    tr.id = `death-record-${record.death_id}`;
 
-                tr.dataset.recordId = record.death_id;
-                tr.dataset.deceasedName = record.first_name && record.last_name ?
-                    `${record.first_name} ${record.middle_name || ''} ${record.last_name}`.replace(/\s+/g, ' ').trim() : '';
-                tr.dataset.regNumber = record.registry_number || '';
+    tr.dataset.recordId = record.death_id;
+    tr.dataset.deceasedName = record.first_name && record.last_name ?
+        `${record.first_name} ${record.middle_name || ''} ${record.last_name}`.replace(/\s+/g, ' ').trim() : '';
+    tr.dataset.regNumber = record.registry_number || '';
 
-                const deceasedName = record.first_name && record.last_name ?
-                    `${record.first_name} ${record.middle_name || ''} ${record.last_name}`.replace(/\s+/g, ' ').trim() : 'N/A';
+    const deceasedName = record.first_name && record.last_name ?
+        `${record.first_name} ${record.middle_name || ''} ${record.last_name}`.replace(/\s+/g, ' ').trim() : 'N/A';
 
-                const age = this.calculateAge(record.date_of_birth, record.date_of_death);
+    const age = this.calculateAge(record.date_of_birth, record.date_of_death);
 
-                tr.innerHTML = `
-                    <td>${rowNumber}</td>
-                    <td>${record.registry_number || 'N/A'}</td>
-                    <td>${deceasedName}</td>
-                    <td>${record.sex || 'N/A'}</td>
-                    <td>${record.date_of_death ? this.formatDate(record.date_of_death) : 'N/A'}</td>
-                    <td>${record.date_of_birth ? this.formatDate(record.date_of_birth) : 'N/A'}</td>
-                    <td>${age}</td>
-                    <td>${record.place_of_death || 'N/A'}</td>
-                    <td>${record.civil_status || 'N/A'}</td>
-                    <td>${record.date_registered ? this.formatDate(record.date_registered) : 'N/A'}</td>
-                    <td>
-                        <div class="btn-group" role="group">
-                            <button class="btn-action btn-view" title="View Details" onclick="deathManager.viewRecord(${record.death_id || 0})">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn-action btn-certificate" title="Generate Certificate" onclick="deathManager.generateCertificate(${record.death_id || 0})">
-                                <i class="fas fa-certificate"></i>
-                            </button>
-                            <button class="btn-action btn-edit" title="Edit" onclick="deathManager.editRecord(${record.death_id || 0})">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-action btn-delete" title="Delete" onclick="deathManager.deleteRecord(${record.death_id || 0})" data-record-id="${record.death_id}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                `;
+    tr.innerHTML = `
+        <td>${rowNumber}</td>
+        <td>
+            <div class="btn-group btn-group-sm" role="group">
+                <button class="btn-action btn-view" title="View Details" onclick="deathManager.viewRecord(${record.death_id || 0})">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn-action btn-certificate" title="Generate Certificate" onclick="deathManager.generateCertificate(${record.death_id || 0})">
+                    <i class="fas fa-certificate"></i>
+                </button>
+                <button class="btn-action btn-edit" title="Edit" onclick="deathManager.editRecord(${record.death_id || 0})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn-action btn-delete" title="Delete" onclick="deathManager.deleteRecord(${record.death_id || 0})" data-record-id="${record.death_id}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </td>
+        <td>${record.registry_number || 'N/A'}</td>
+        <td>${deceasedName}</td>
+        <td>${record.sex || 'N/A'}</td>
+        <td>${record.date_of_death ? this.formatDate(record.date_of_death) : 'N/A'}</td>
+        <td>${record.date_of_birth ? this.formatDate(record.date_of_birth) : 'N/A'}</td>
+        <td>${age}</td>
+        <td>${record.place_of_death || 'N/A'}</td>
+        <td>${record.civil_status || 'N/A'}</td>
+        <td>${record.date_registered ? this.formatDate(record.date_registered) : 'N/A'}</td>
+    `;
 
-                return tr;
-            }
+    return tr;
+}
 
             calculateAge(birthdate, deathdate) {
                 try {
