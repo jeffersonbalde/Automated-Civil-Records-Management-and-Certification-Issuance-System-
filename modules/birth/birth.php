@@ -3416,9 +3416,9 @@
                             currentStep++;
                             showStep(currentStep);
 
-                            if (currentStep === 1) {
-                                checkForDuplicates();
-                            }
+                            // if (currentStep === 1) {
+                            //     checkForDuplicates();
+                            // }
                         }
                     } else {
                         // Scroll to first error if validation fails
